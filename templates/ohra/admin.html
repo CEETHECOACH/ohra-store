@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ÔHRA Admin — Product Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Cinzel:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0c2318;--forest-dark:#081810;--forest-mid:#122d1e;--gold:#c9a84c;--gold-bright:#dfc068;--cream:#f4ede0;--cream-dim:#c2b89e;--danger:#c0392b;--success:#27ae60;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--forest-dark);color:var(--cream);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;}
+
+/* TOP BAR */
+.topbar{background:rgba(8,24,16,.97);border-bottom:1px solid rgba(201,168,76,.15);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:68px;position:sticky;top:0;z-index:100;backdrop-filter:blur(14px);}
+.topbar-logo{font-family:'Cinzel',serif;font-size:15px;letter-spacing:.38em;color:var(--gold);}
+.topbar-title{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--cream-dim);}
+.topbar-actions{display:flex;gap:12px;align-items:center;}
+.topbar-actions a{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--cream-dim);text-decoration:none;padding:8px 16px;border:1px solid rgba(201,168,76,.2);transition:all .3s;}
+.topbar-actions a:hover{border-color:var(--gold);color:var(--gold);}
+.topbar-actions a.primary{background:var(--gold);color:var(--forest-dark);border-color:var(--gold);}
+.topbar-actions a.primary:hover{background:transparent;color:var(--gold);}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:380px 1fr;min-height:calc(100vh - 68px);}
+.sidebar{background:var(--forest);border-right:1px solid rgba(201,168,76,.1);padding:32px;overflow-y:auto;max-height:calc(100vh - 68px);position:sticky;top:68px;}
+.main{padding:32px;overflow-y:auto;}
+
+/* FORM */
+.form-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--cream);margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid rgba(201,168,76,.12);}
+.form-title em{font-style:italic;color:var(--gold);}
+.form-group{margin-bottom:20px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+label{display:block;font-size:8px;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+input[type=text],input[type=number],input[type=file],select,textarea{width:100%;background:var(--forest-dark);border:1px solid rgba(201,168,76,.15);padding:11px 14px;color:var(--cream);font-family:'Jost',sans-serif;font-size:13px;font-weight:300;outline:none;transition:border-color .3s;-webkit-appearance:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);}
+select option{background:var(--forest-dark);}
+textarea{resize:vertical;min-height:60px;}
+input[type=file]{padding:8px 14px;cursor:pointer;}
+.toggle-row{display:flex;align-items:center;gap:12px;}
+.toggle{width:44px;height:24px;background:rgba(201,168,76,.15);border-radius:12px;position:relative;cursor:pointer;transition:background .3s;flex-shrink:0;border:none;}
+.toggle.on{background:var(--gold);}
+.toggle::after{content:'';width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .3s;}
+.toggle.on::after{left:23px;}
+.toggle-label{font-size:12px;color:var(--cream-dim);}
+input[type=checkbox]{display:none;}
+.img-preview{width:100%;aspect-ratio:1;object-fit:contain;border:1px solid rgba(201,168,76,.12);background:var(--forest-mid);margin-top:10px;display:none;padding:8px;}
+.img-preview.show{display:block;}
+.submit-btn{width:100%;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--forest-dark);background:var(--gold);border:none;padding:15px;cursor:pointer;font-weight:500;transition:background .3s;margin-top:8px;}
+.submit-btn:hover{background:var(--gold-bright);}
+.cancel-btn{width:100%;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--cream-dim);background:transparent;border:1px solid rgba(201,168,76,.2);padding:13px;cursor:pointer;font-weight:300;transition:all .3s;margin-top:8px;}
+.cancel-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* TOAST */
+.toast{position:fixed;bottom:32px;right:32px;padding:14px 24px;font-size:12px;letter-spacing:.08em;z-index:9999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;max-width:320px;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:var(--success);color:#fff;}
+.toast.error{background:var(--danger);color:#fff;}
+
+/* PRODUCT TABLE */
+.section-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--cream);margin-bottom:24px;}
+.section-title em{font-style:italic;color:var(--gold);}
+.stats-bar{display:flex;gap:24px;margin-bottom:28px;flex-wrap:wrap;}
+.stat{background:var(--forest);border:1px solid rgba(201,168,76,.1);padding:16px 24px;}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--gold);font-weight:300;line-height:1;}
+.stat-l{font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:var(--cream-dim);margin-top:4px;}
+.search-bar{margin-bottom:20px;}
+.search-input{width:100%;max-width:360px;background:var(--forest);border:1px solid rgba(201,168,76,.15);padding:11px 16px;color:var(--cream);font-family:'Jost',sans-serif;font-size:13px;outline:none;transition:border-color .3s;}
+.search-input:focus{border-color:var(--gold);}
+.ptable{width:100%;border-collapse:collapse;}
+.ptable th{font-size:8px;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);padding:12px 16px;text-align:left;border-bottom:1px solid rgba(201,168,76,.15);background:var(--forest);white-space:nowrap;}
+.ptable td{padding:14px 16px;border-bottom:1px solid rgba(201,168,76,.06);vertical-align:middle;font-size:12px;}
+.ptable tr:hover td{background:rgba(201,168,76,.03);}
+.prod-thumb{width:48px;height:48px;object-fit:contain;border:1px solid rgba(201,168,76,.1);background:#fff;padding:4px;}
+.prod-thumb-placeholder{width:48px;height:48px;background:var(--forest-mid);border:1px solid rgba(201,168,76,.1);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--cream-dim);}
+.badge-tag{display:inline-block;background:rgba(201,168,76,.12);color:var(--gold);font-size:7px;letter-spacing:.3em;text-transform:uppercase;padding:3px 8px;}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+.status-dot.on{background:var(--success);}.status-dot.off{background:var(--danger);}
+.action-btns{display:flex;gap:8px;}
+.edit-btn,.delete-btn,.toggle-active-btn{font-size:8px;letter-spacing:.25em;text-transform:uppercase;padding:6px 12px;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-weight:500;transition:all .3s;}
+.edit-btn{background:rgba(201,168,76,.12);color:var(--gold);}
+.edit-btn:hover{background:var(--gold);color:var(--forest-dark);}
+.delete-btn{background:rgba(192,57,43,.12);color:#e08080;}
+.delete-btn:hover{background:var(--danger);color:#fff;}
+.toggle-active-btn{background:rgba(39,174,96,.1);color:#7ecf9e;}
+.toggle-active-btn:hover{background:var(--success);color:#fff;}
+.toggle-active-btn.deactivate{background:rgba(192,57,43,.1);color:#e08080;}
+.toggle-active-btn.deactivate:hover{background:var(--danger);color:#fff;}
+.empty-state{text-align:center;padding:80px 20px;color:var(--cream-dim);}
+.empty-state p{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;margin-bottom:16px;}
+.color-swatch{width:12px;height:12px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:6px;}
+@media(max-width:900px){.layout{grid-template-columns:1fr;}.sidebar{position:relative;top:0;max-height:none;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:20px;">
+    <span class="topbar-logo">ÔHRA</span>
+    <span class="topbar-title">Product Manager</span>
+  </div>
+  <div class="topbar-actions">
+    <a href="/" target="_blank">View Store ↗</a>
+    <a href="/admin-logout/">Sign Out</a>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR: ADD / EDIT FORM -->
+  <div class="sidebar">
+    <div class="form-title" id="form-title">Add <em>New Product</em></div>
+
+    <form id="product-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" id="product-id" value="">
+
+      <div class="form-group">
+        <label for="name">Product Name *</label>
+        <input type="text" id="name" name="name" placeholder="e.g. Mallow Madness" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="brand">Brand *</label>
+          <input type="text" id="brand" name="brand" value="Lattafa" required>
+        </div>
+        <div class="form-group">
+          <label for="price">Price (CAD) *</label>
+          <input type="number" id="price" name="price" step="0.01" min="0" placeholder="40.00" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Scent Notes</label>
+        <textarea id="notes" name="notes" placeholder="e.g. Strawberry · Vanilla · Marshmallow · 75ml"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="badge">Badge</label>
+          <input type="text" id="badge" name="badge" placeholder="Best Seller, New In...">
+        </div>
+        <div class="form-group">
+          <label for="order">Display Order</label>
+          <input type="number" id="order" name="order" value="0" min="0">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="accent">Card Accent Colour</label>
+        <select id="accent" name="accent">
+          <option value="ac-purple">Purple</option>
+          <option value="ac-gold" selected>Gold</option>
+          <option value="ac-red">Red</option>
+          <option value="ac-pink">Pink</option>
+          <option value="ac-teal">Teal</option>
+          <option value="ac-brown">Brown</option>
+          <option value="ac-sunny">Yellow / Sunny</option>
+          <option value="ac-rose">Rose</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Product Image</label>
+        <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(this)">
+        <img id="img-preview" class="img-preview" src="" alt="Preview">
+      </div>
+
+      <div class="form-group">
+        <div class="toggle-row">
+          <button type="button" class="toggle on" id="active-toggle" onclick="toggleActive()"></button>
+          <span class="toggle-label">Product is <strong id="active-label">Active</strong> (visible on store)</span>
+        </div>
+        <input type="hidden" id="is_active" name="is_active" value="true">
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">Add Product</button>
+      <button type="button" class="cancel-btn" id="cancel-btn" onclick="resetForm()" style="display:none;">Cancel Edit</button>
+    </form>
+  </div>
+
+  <!-- MAIN: PRODUCT TABLE -->
+  <div class="main">
+    <h2 class="section-title">All <em>Products</em></h2>
+
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-n" id="stat-total">{{ products.count }}</div><div class="stat-l">Total Products</div></div>
+      <div class="stat"><div class="stat-n" id="stat-active">{{ products.filter.is_active }}</div><div class="stat-l">Active</div></div>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" class="search-input" placeholder="Search products..." oninput="filterTable(this.value)">
+    </div>
+
+    <div id="table-wrap">
+      {% if products %}
+      <table class="ptable" id="ptable">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Badge</th>
+            <th>Status</th>
+            <th>Order</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="ptbody">
+          {% for p in products %}
+          <tr id="row-{{ p.id }}" data-search="{{ p.name|lower }} {{ p.brand|lower }}">
+            <td>
+              {% if p.image %}
+              <img src="{{ p.image.url }}" alt="{{ p.name }}" class="prod-thumb">
+              {% else %}
+              <div class="prod-thumb-placeholder">No img</div>
+              {% endif %}
+            </td>
+            <td><strong>{{ p.name }}</strong></td>
+            <td>{{ p.brand }}</td>
+            <td style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:16px;">{{ p.price_display }}</td>
+            <td>{% if p.badge %}<span class="badge-tag">{{ p.badge }}</span>{% else %}<span style="color:var(--cream-dim);opacity:.4;">—</span>{% endif %}</td>
+            <td>
+              <span class="status-dot {% if p.is_active %}on{% else %}off{% endif %}"></span>
+              {% if p.is_active %}Active{% else %}Hidden{% endif %}
+            </td>
+            <td>{{ p.order }}</td>
+            <td>
+              <div class="action-btns">
+                <button class="edit-btn" onclick="editProduct({{ p.id }})">Edit</button>
+                <button class="toggle-active-btn {% if p.is_active %}deactivate{% endif %}" onclick="toggleProductActive({{ p.id }}, {{ p.is_active|yesno:'true,false' }})">
+                  {% if p.is_active %}Hide{% else %}Show{% endif %}
+                </button>
+                <button class="delete-btn" onclick="deleteProduct({{ p.id }}, '{{ p.name }}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <p>No products yet.</p>
+        <p style="font-size:12px;">Use the form on the left to add your first product.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CSRF = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+// ── TOAST ──────────────────────────────────────────────────────────────────
+function toast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── IMAGE PREVIEW ──────────────────────────────────────────────────────────
+function previewImage(input) {
+  const prev = document.getElementById('img-preview');
+  if (input.files && input.files[0]) {
+    const r = new FileReader();
+    r.onload = e => { prev.src = e.target.result; prev.classList.add('show'); };
+    r.readAsDataURL(input.files[0]);
+  }
+}
+
+// ── ACTIVE TOGGLE ──────────────────────────────────────────────────────────
+function toggleActive() {
+  const btn = document.getElementById('active-toggle');
+  const hidden = document.getElementById('is_active');
+  const label = document.getElementById('active-label');
+  const isOn = btn.classList.toggle('on');
+  hidden.value = isOn ? 'true' : 'false';
+  label.textContent = isOn ? 'Active' : 'Hidden';
+}
+
+// ── FORM SUBMIT (add or update) ────────────────────────────────────────────
+document.getElementById('product-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const id = document.getElementById('product-id').value;
+  const fd = new FormData(this);
+  fd.set('csrfmiddlewaretoken', CSRF);
+
+  const url = id ? `/api/products/${id}/` : '/api/products/create/';
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Saving...';
+
+  try {
+    const res = await fetch(url, { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.success) {
+      toast(data.message);
+      resetForm();
+      setTimeout(() => location.reload(), 800);
+    } else {
+      toast(data.error || 'Something went wrong.', 'error');
+    }
+  } catch (err) {
+    toast('Network error. Try again.', 'error');
+  } finally {
+    btn.textContent = id ? 'Update Product' : 'Add Product';
+  }
+});
+
+// ── EDIT ───────────────────────────────────────────────────────────────────
+async function editProduct(id) {
+  try {
+    const res = await fetch(`/api/products/${id}/`);
+    const p = await res.json();
+
+    document.getElementById('product-id').value = p.id;
+    document.getElementById('name').value = p.name;
+    document.getElementById('brand').value = p.brand;
+    document.getElementById('price').value = p.price;
+    document.getElementById('notes').value = p.notes;
+    document.getElementById('badge').value = p.badge;
+    document.getElementById('accent').value = p.accent;
+    document.getElementById('order').value = p.order;
+    document.getElementById('is_active').value = p.is_active ? 'true' : 'false';
+
+    const toggle = document.getElementById('active-toggle');
+    const label = document.getElementById('active-label');
+    if (p.is_active) { toggle.classList.add('on'); label.textContent = 'Active'; }
+    else { toggle.classList.remove('on'); label.textContent = 'Hidden'; }
+
+    if (p.image_url) {
+      const prev = document.getElementById('img-preview');
+      prev.src = p.image_url;
+      prev.classList.add('show');
+    }
+
+    document.getElementById('form-title').innerHTML = 'Edit <em>Product</em>';
+    document.getElementById('submit-btn').textContent = 'Update Product';
+    document.getElementById('cancel-btn').style.display = 'block';
+
+    // scroll sidebar to top
+    document.querySelector('.sidebar').scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    toast('Could not load product.', 'error');
+  }
+}
+
+// ── DELETE ─────────────────────────────────────────────────────────────────
+async function deleteProduct(id, name) {
+  if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  try {
+    const res = await fetch(`/api/products/${id}/`, {
+      method: 'DELETE',
+      headers: { 'X-CSRFToken': CSRF }
+    });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById(`row-${id}`)?.remove();
+      toast(data.message);
+      updateStats();
+    } else {
+      toast(data.error || 'Delete failed.', 'error');
+    }
+  } catch (err) {
+    toast('Network error.', 'error');
+  }
+}
+
+// ── TOGGLE ACTIVE ──────────────────────────────────────────────────────────
+async function toggleProductActive(id, currentlyActive) {
+  const fd = new FormData();
+  fd.append('is_active', currentlyActive ? 'false' : 'true');
+  fd.append('csrfmiddlewaretoken', CSRF);
+
+  try {
+    const res = await fetch(`/api/products/${id}/`, { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.success) {
+      toast(data.message);
+      setTimeout(() => location.reload(), 600);
+    }
+  } catch (err) {
+    toast('Network error.', 'error');
+  }
+}
+
+// ── RESET FORM ─────────────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('product-form').reset();
+  document.getElementById('product-id').value = '';
+  document.getElementById('form-title').innerHTML = 'Add <em>New Product</em>';
+  document.getElementById('submit-btn').textContent = 'Add Product';
+  document.getElementById('cancel-btn').style.display = 'none';
+  document.getElementById('active-toggle').classList.add('on');
+  document.getElementById('is_active').value = 'true';
+  document.getElementById('active-label').textContent = 'Active';
+  const prev = document.getElementById('img-preview');
+  prev.src = '';
+  prev.classList.remove('show');
+}
+
+// ── SEARCH ─────────────────────────────────────────────────────────────────
+function filterTable(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('#ptbody tr').forEach(row => {
+    row.style.display = row.dataset.search.includes(q) ? '' : 'none';
+  });
+}
+
+// ── STATS ──────────────────────────────────────────────────────────────────
+function updateStats() {
+  const rows = document.querySelectorAll('#ptbody tr');
+  document.getElementById('stat-total').textContent = rows.length;
+}
+</script>
+</body>
+</html>

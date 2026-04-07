@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ÔHRA Admin — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Cinzel:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0c2318;--forest-dark:#081810;--gold:#c9a84c;--cream:#f4ede0;--cream-dim:#c2b89e;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--forest-dark);color:var(--cream);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.login-wrap{width:100%;max-width:420px;padding:20px;}
+.login-logo{text-align:center;margin-bottom:48px;}
+.login-logo-box{display:inline-flex;flex-direction:column;align-items:center;border:1px solid var(--gold);padding:10px 22px;}
+.login-logo-main{font-family:'Cinzel',serif;font-size:22px;letter-spacing:.4em;color:var(--gold);}
+.login-logo-sub{font-size:7px;letter-spacing:.5em;color:var(--cream-dim);text-transform:uppercase;margin-top:3px;}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--cream-dim);text-align:center;margin-bottom:36px;letter-spacing:.06em;}
+.login-card{background:var(--forest);border:1px solid rgba(201,168,76,.15);padding:40px;}
+.form-group{margin-bottom:24px;}
+label{display:block;font-size:8.5px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(201,168,76,.25);padding:12px 0;color:var(--cream);font-family:'Jost',sans-serif;font-size:14px;font-weight:300;outline:none;transition:border-color .3s;}
+input::placeholder{color:rgba(194,184,158,.3);}
+input:focus{border-color:var(--gold);}
+.login-btn{width:100%;margin-top:8px;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.38em;text-transform:uppercase;color:var(--forest-dark);background:var(--gold);border:none;padding:16px;cursor:pointer;font-weight:500;transition:background .3s;}
+.login-btn:hover{background:#dfc068;}
+.error{background:rgba(180,40,40,.15);border:1px solid rgba(180,40,40,.4);padding:12px 16px;margin-bottom:24px;font-size:12px;color:#e08080;border-radius:0;}
+.back-link{display:block;text-align:center;margin-top:22px;color:var(--cream-dim);text-decoration:none;font-size:10px;letter-spacing:.2em;transition:color .3s;}
+.back-link:hover{color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="login-wrap">
+  <div class="login-logo">
+    <div class="login-logo-box">
+      <span class="login-logo-main">ÔHRA</span>
+      <span class="login-logo-sub">Admin Panel</span>
+    </div>
+  </div>
+  <p class="login-title">Staff access only</p>
+  <div class="login-card">
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="your username" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="login-btn">Sign In</button>
+    </form>
+  </div>
+  <a href="/" class="back-link">← Back to Store</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ÔHRA SCENTS — Arabian Luxury Perfumes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0c2318;--forest-dark:#081810;--forest-mid:#122d1e;--gold:#c9a84c;--gold-bright:#dfc068;--cream:#f4ede0;--cream-dim:#c2b89e;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--forest-dark);color:var(--cream);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+#cur{width:7px;height:7px;background:var(--gold);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cur-r{width:34px;height:34px;border:1px solid var(--gold);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .16s ease;opacity:.45;}
+.ann{background:var(--gold);padding:11px 20px;text-align:center;font-family:'Cinzel',serif;font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--forest-dark);font-weight:500;}
+nav{position:sticky;top:0;z-index:600;background:rgba(8,24,16,.97);border-bottom:1px solid rgba(201,168,76,.12);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:76px;}
+.nav-logo{text-decoration:none;}.nav-logo-box{border:1px solid var(--gold);padding:7px 18px 6px;display:flex;flex-direction:column;align-items:center;transition:background .3s;}
+.nav-logo:hover .nav-logo-box{background:rgba(201,168,76,.06);}
+.nav-logo-main{font-family:'Cinzel',serif;font-size:17px;letter-spacing:.38em;color:var(--gold);line-height:1;}
+.nav-logo-sub{font-size:6px;letter-spacing:.55em;color:var(--cream-dim);font-weight:300;text-transform:uppercase;margin-top:3px;}
+.nav-links{display:flex;gap:38px;list-style:none;}
+.nav-links a{color:var(--cream-dim);text-decoration:none;font-size:10px;letter-spacing:.28em;text-transform:uppercase;transition:color .3s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-right{display:flex;gap:18px;align-items:center;}
+.nav-cart{font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--forest-dark);background:var(--gold);padding:11px 24px;text-decoration:none;font-weight:500;border:1px solid var(--gold);transition:background .3s,color .3s;}
+.nav-cart:hover{background:transparent;color:var(--gold);}
+.hero{min-height:88vh;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--forest);position:relative;overflow:hidden;padding:80px 60px;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(201,168,76,.06) 0%,transparent 65%);}
+.hero-inner{position:relative;z-index:2;max-width:800px;}
+.hero-kicker{font-size:9px;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:14px;}
+.hero-kicker::before,.hero-kicker::after{content:'';width:32px;height:1px;background:var(--gold);}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(54px,8vw,120px);font-weight:300;line-height:.88;color:var(--cream);margin-bottom:24px;}
+.hero-h1 em{font-style:italic;color:var(--gold);}
+.hero-tagline{font-family:'Cormorant Garamond',serif;font-size:clamp(16px,2vw,22px);font-style:italic;color:var(--cream-dim);line-height:1.65;margin-bottom:48px;}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn-gold{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--forest-dark);background:var(--gold);padding:15px 36px;text-decoration:none;font-weight:500;border:1px solid var(--gold);transition:background .3s,color .3s;display:inline-block;}
+.btn-gold:hover{background:transparent;color:var(--gold);}
+.marquee{background:var(--gold);padding:13px 0;overflow:hidden;}
+.marquee-track{display:flex;animation:marquee 30s linear infinite;white-space:nowrap;width:max-content;}
+.m-item{font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.38em;text-transform:uppercase;color:var(--forest-dark);padding:0 28px;flex-shrink:0;}
+.m-sep{color:rgba(8,24,16,.4);padding:0 6px;flex-shrink:0;}
+.shop{padding:110px 60px;background:var(--forest-dark);}
+.shop-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;}
+.shop-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,72px);font-weight:300;line-height:.95;color:var(--cream);}
+.shop-title em{font-style:italic;color:var(--gold);}
+.eyebrow{font-size:8.5px;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.pcard{background:var(--forest);position:relative;overflow:hidden;transition:transform .4s;cursor:none;}
+.pcard:hover{transform:translateY(-6px);}
+.pcard-img{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#fff;}
+.pcard-img img{width:100%;height:100%;object-fit:contain;padding:16px;transition:transform .6s ease;}
+.pcard:hover .pcard-img img{transform:scale(1.06);}
+.pcard-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--forest-mid);font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(201,168,76,.3);text-align:center;padding:20px;}
+.pcard-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
+.ac-purple .pcard-img::after{background:linear-gradient(90deg,#6b3fa0,#b07ee0);}
+.ac-gold .pcard-img::after{background:linear-gradient(90deg,#8a6e28,#dfc068);}
+.ac-red .pcard-img::after{background:linear-gradient(90deg,#8b1a1a,#d44040);}
+.ac-pink .pcard-img::after{background:linear-gradient(90deg,#a03060,#e070a0);}
+.ac-teal .pcard-img::after{background:linear-gradient(90deg,#1a4a4a,#2a9090);}
+.ac-brown .pcard-img::after{background:linear-gradient(90deg,#3a1a0a,#8a4a20);}
+.ac-sunny .pcard-img::after{background:linear-gradient(90deg,#8a6a00,#e0b030);}
+.ac-rose .pcard-img::after{background:linear-gradient(90deg,#7a3a50,#c08090);}
+.pcard-hover{position:absolute;inset:0;background:rgba(8,24,16,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .35s;height:calc(100% - 140px);}
+.pcard:hover .pcard-hover{opacity:1;}
+.qv-btn{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--forest-dark);background:var(--gold);padding:12px 22px;text-decoration:none;font-weight:500;transform:translateY(8px);transition:transform .35s;}
+.pcard:hover .qv-btn{transform:translateY(0);}
+.pcard-badge{position:absolute;top:14px;left:14px;z-index:5;background:var(--gold);color:var(--forest-dark);font-size:7.5px;letter-spacing:.35em;text-transform:uppercase;padding:5px 10px;font-weight:500;}
+.pcard-info{padding:18px 20px 24px;border-top:1px solid rgba(201,168,76,.1);}
+.pcard-brand{font-size:8.5px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.pcard-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--cream);margin-bottom:5px;}
+.pcard-notes{font-size:10.5px;color:var(--cream-dim);margin-bottom:16px;line-height:1.6;}
+.pcard-foot{display:flex;justify-content:space-between;align-items:center;}
+.pcard-price{font-family:'Cormorant Garamond',serif;font-size:21px;color:var(--gold);font-weight:300;}
+.add-btn{font-size:8.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--forest-dark);background:var(--gold);border:none;padding:9px 15px;cursor:none;font-weight:500;transition:background .3s;}
+.add-btn:hover{background:var(--gold-bright);}
+.no-products{text-align:center;padding:80px 20px;font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--cream-dim);}
+.why{padding:110px 60px;background:var(--forest);border-top:1px solid rgba(201,168,76,.08);}
+.why-grid{display:grid;grid-template-columns:1fr 2fr;gap:80px;align-items:start;}
+.why-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4.5vw,64px);font-weight:300;line-height:.95;color:var(--cream);position:sticky;top:100px;}
+.why-title em{font-style:italic;color:var(--gold);display:block;}
+.why-items{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.why-item{padding:36px 32px;border-right:1px solid rgba(201,168,76,.08);border-bottom:1px solid rgba(201,168,76,.08);}
+.why-item:nth-child(2n){border-right:none;}.why-item:nth-last-child(-n+2){border-bottom:none;}
+.why-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(201,168,76,.12);line-height:1;margin-bottom:14px;}
+.why-h{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:10px;}
+.why-p{font-size:12px;line-height:1.9;color:var(--cream-dim);}
+footer{background:var(--forest-dark);padding:56px 60px 32px;border-top:1px solid rgba(201,168,76,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;}
+.footer-logo-main{font-family:'Cinzel',serif;font-size:16px;letter-spacing:.38em;color:var(--gold);}
+.footer-links{display:flex;gap:28px;list-style:none;}
+.footer-links a{color:var(--cream-dim);text-decoration:none;font-size:11px;letter-spacing:.08em;transition:color .3s;}
+.footer-links a:hover{color:var(--gold);}
+.footer-copy{font-size:9px;color:rgba(194,184,158,.28);letter-spacing:.1em;text-transform:uppercase;}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .85s ease,transform .85s ease;}
+.rv.vis{opacity:1;transform:translateY(0);}
+.rv.d1{transition-delay:.08s;}.rv.d2{transition-delay:.18s;}.rv.d3{transition-delay:.28s;}.rv.d4{transition-delay:.38s;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@media(max-width:1024px){nav{padding:0 32px;}.pgrid{grid-template-columns:repeat(2,1fr);}.why-grid{grid-template-columns:1fr;}.shop,.why{padding:72px 32px;}.hero{padding:80px 32px;}footer{padding:48px 32px 28px;}}
+@media(max-width:640px){.nav-links{display:none;}.pgrid{grid-template-columns:1fr;}.why-items{grid-template-columns:1fr;}.why-item{border-right:none !important;}}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<div class="ann">✦ &nbsp; Free Shipping on Orders $75+ &nbsp; · &nbsp; Authentic Arab Perfumes &nbsp; ✦</div>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-box">
+      <span class="nav-logo-main">ÔHRA</span>
+      <span class="nav-logo-sub">Scents · Arabian Perfumes</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#shop">Shop All</a></li>
+    <li><a href="#why">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#" class="nav-cart">Cart (0)</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">New Arrivals — 2025</div>
+    <h1 class="hero-h1">The Art of<br><em>Arabian</em> Scent.</h1>
+    <p class="hero-tagline">Handpicked fragrances from the finest Arab perfume houses.<br>Worn by those who know.</p>
+    <div class="hero-btns">
+      <a href="#shop" class="btn-gold">Shop Collection</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="m-item">Lattafa</span><span class="m-sep">✦</span>
+    <span class="m-item">Rasasi</span><span class="m-sep">✦</span>
+    <span class="m-item">Armaf</span><span class="m-sep">✦</span>
+    <span class="m-item">Al Haramain</span><span class="m-sep">✦</span>
+    <span class="m-item">Swiss Arabian</span><span class="m-sep">✦</span>
+    <span class="m-item">Bharara</span><span class="m-sep">✦</span>
+    <span class="m-item">Afnan</span><span class="m-sep">✦</span>
+    <span class="m-item">Orientica</span><span class="m-sep">✦</span>
+    <span class="m-item">Lattafa</span><span class="m-sep">✦</span>
+    <span class="m-item">Rasasi</span><span class="m-sep">✦</span>
+    <span class="m-item">Armaf</span><span class="m-sep">✦</span>
+    <span class="m-item">Al Haramain</span><span class="m-sep">✦</span>
+    <span class="m-item">Swiss Arabian</span><span class="m-sep">✦</span>
+    <span class="m-item">Bharara</span><span class="m-sep">✦</span>
+    <span class="m-item">Afnan</span><span class="m-sep">✦</span>
+    <span class="m-item">Orientica</span><span class="m-sep">✦</span>
+  </div>
+</div>
+
+<section class="shop" id="shop">
+  <div class="shop-header rv">
+    <div>
+      <div class="eyebrow">Featured Fragrances</div>
+      <h2 class="shop-title">Scents that leave<br><em>a legacy.</em></h2>
+    </div>
+  </div>
+
+  {% if products %}
+  <div class="pgrid">
+    {% for p in products %}
+    <div class="pcard {{ p.accent }} rv d{{ forloop.counter|divisibleby:4|yesno:'4,' }}{% if forloop.counter|divisibleby:3 %}d3{% elif forloop.counter|divisibleby:2 %}d2{% else %}d1{% endif %}">
+      {% if p.badge %}<span class="pcard-badge">{{ p.badge }}</span>{% endif %}
+      <div class="pcard-img">
+        {% if p.image %}
+          <img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">
+        {% else %}
+          <div class="pcard-img-placeholder">{{ p.name }}</div>
+        {% endif %}
+        <div class="pcard-hover"><a href="#" class="qv-btn">Quick View</a></div>
+      </div>
+      <div class="pcard-info">
+        <div class="pcard-brand">{{ p.brand }}</div>
+        <div class="pcard-name">{{ p.name }}</div>
+        <div class="pcard-notes">{{ p.notes }}</div>
+        <div class="pcard-foot">
+          <div class="pcard-price">{{ p.price_display }}</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="no-products">No products yet — add some in the admin panel.</div>
+  {% endif %}
+</section>
+
+<section class="why" id="why">
+  <div class="why-grid">
+    <div class="rv">
+      <div class="eyebrow">Our Promise</div>
+      <h2 class="why-title">Why shop<br><em>ÔHRA.</em></h2>
+    </div>
+    <div class="why-items">
+      <div class="why-item rv d1"><div class="why-num">01</div><div class="why-h">100% Authentic</div><div class="why-p">Every bottle sourced directly from authorized Arab perfume distributors. No imitations. No grey market. Ever.</div></div>
+      <div class="why-item rv d2"><div class="why-num">02</div><div class="why-h">Curated Selection</div><div class="why-p">We hand-select every fragrance. If it is on our shelves, it passed our standard for quality and prestige.</div></div>
+      <div class="why-item rv d1"><div class="why-num">03</div><div class="why-h">Secure Shipping</div><div class="why-p">Every order professionally packaged. Fragrance this rare deserves to arrive in perfect condition.</div></div>
+      <div class="why-item rv d2"><div class="why-num">04</div><div class="why-h">Expert Guidance</div><div class="why-p">Not sure what to wear? Our team knows every note in every bottle. We will help you find your signature scent.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-logo-main">ÔHRA SCENTS</div>
+  <ul class="footer-links">
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#why">About</a></li>
+    <li><a href="/admin-login/">Staff Login</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 ÔHRA Scents. All Rights Reserved.</div>
+</footer>
+
+<script>
+const dot = document.getElementById('cur'), ring = document.getElementById('cur-r');
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+setInterval(() => { ring.style.left = mx + 'px'; ring.style.top = my + 'px'; }, 55);
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.transform = 'translate(-50%,-50%) scale(1.9)'; ring.style.opacity = '1'; });
+  el.addEventListener('mouseleave', () => { ring.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '.45'; });
+});
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
+}, { threshold: .1 });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
